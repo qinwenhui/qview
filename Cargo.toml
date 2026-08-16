@@ -1,0 +1,59 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/core",
+    "crates/application",
+    "crates/agent",
+    "crates/store",
+    "crates/mcp",
+    "frontends/cli",
+    "frontends/gui-egui",
+    "frontends/gui-native",
+    "frontends/gui-macos",
+    "dist/installer",
+    "bench",
+]
+
+# crates/mcp 是暂时从**默认构建**摘出的死代码（无 bin、无 crate 依赖它，
+default-members = [
+    "crates/core",
+    "crates/application",
+    "crates/agent",
+    "crates/store",
+    "frontends/cli",
+    "frontends/gui-egui",
+    "frontends/gui-native",
+    "frontends/gui-macos",
+    "dist/installer",
+    "bench",
+]
+
+# 目录分区速览：
+#   crates/         — 库（被复用，不直接产出可执行文件）
+#   frontends/      — 4 个可执行前端
+#     cli/          — TUI (ratatui+crossterm), vim 键位, 空载占用~1 MiB
+#     gui-egui/     — 跨平台 GUI (egui+glow), 全功能, 空载占用~100 MiB
+#     gui-native/   — Windows 原生 Win32/GDI, 极简, 空载占用~12 MiB
+#     gui-macos/    — macOS 原生 AppKit / CoreText, 极简
+#   dist/installer/ — Windows 分发：安装向导 + 卸载器 + 一键打包工具（bundle）
+
+[workspace.package]
+version = "1.0.0"
+edition = "2021"
+license = "GPL-3.0"
+authors = ["qinwh"]
+
+[profile.release]
+opt-level = "s"      # optimize for binary size
+lto = "thin"         # link-time optimization
+codegen-units = 1    # better optimization, single unit
+strip = "symbols"    # strip debug symbols from binary
+
+[profile.release.package.qview-gui-macos]
+opt-level = "z"
+codegen-units = 1
+
+# 原生 GUI 尺寸目标
+[profile.release.package.qview-gui-native]
+opt-level = "z"
+codegen-units = 1

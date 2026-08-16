@@ -1,0 +1,48 @@
+[package]
+name = "qview-agent"
+version.workspace = true
+edition.workspace = true
+description = "qview 器灵 Agent runtime — wraps contexa ReActWorker + AgentEvent sink + approval flow."
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+qview-core = { path = "../core" }
+qview-application = { path = "../application" }
+qview-store = { path = "../store" }
+contexa = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa" }
+contexa-context = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-context" }
+contexa-core = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-core" }
+contexa-tools = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-tools" }
+contexa-llm = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-llm" }
+contexa-hooks = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-hooks" }
+contexa-memory = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-memory" }
+contexa-multiagent = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-multiagent" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "1"
+anyhow = "1"
+async-trait = "0.1"
+tokio = { version = "1", features = ["rt-multi-thread", "sync", "macros", "time", "fs"] }
+tokio-util = "0.7"
+futures = "0.3"
+parking_lot = "0.12"
+crossbeam-channel = "0.5"
+uuid = { version = "1", features = ["v4", "serde"] }
+tracing = "0.1"
+clap = { version = "4", features = ["derive"] }
+dirs = "5"
+tracing-subscriber = { version = "0.3", optional = true, features = ["env-filter"] }
+
+[features]
+default = []
+mock-provider = ["dep:tracing-subscriber"]
+
+[lib]
+name = "qview_agent"
+path = "src/lib.rs"
+
+[[bin]]
+name = "qview-agent-cli"
+path = "src/bin/qview_agent_cli.rs"
+required-features = ["mock-provider"]

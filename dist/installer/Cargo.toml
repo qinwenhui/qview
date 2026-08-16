@@ -1,0 +1,68 @@
+[package]
+name = "qview-installer"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description = "qview Windows 安装向导（egui）与卸载器"
+publish = false
+# `cargo run -p qview-installer` 直接跑打包工具
+default-run = "qview-bundle"
+
+# 本 crate 仅面向 Windows（注册表 HKCU / Shell 快捷方式）。
+# 在非 Windows 平台构建工作区时请 `--exclude qview-installer`。
+
+[features]
+default = ["installer"]
+# 安装向导（默认）：egui 向导 + 载荷解压 + 注册表/快捷方式
+installer = [
+    "dep:eframe",
+    "dep:egui",
+    "dep:rfd",
+    "dep:qview-core",
+    "dep:zstd",
+    "dep:image",
+]
+# 卸载器：仅 winreg + windows + serde，不编译 egui 树，二进制 ~1MB
+uninstaller = []
+
+[dependencies]
+# 共享（向导 + 卸载器都会编译，体积小）
+anyhow = "1"
+winreg = "0.55"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+windows = { version = "0.58", features = [
+    "Win32_Foundation",
+    "Win32_System_Com",
+    "Win32_UI_Shell",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+# 仅安装向导
+eframe = { version = "0.31", default-features = false, features = ["glow", "default_fonts"], optional = true }
+egui = { version = "0.31", default-features = false, features = ["default_fonts"], optional = true }
+rfd = { version = "0.15", optional = true }
+qview-core = { path = "../../crates/core", optional = true }
+zstd = { version = "0.13", optional = true }
+# 窗口图标：解码载荷里 assets/icon.ico → IconData
+image = { version = "0.25", default-features = false, features = ["ico"], optional = true }
+
+[[bin]]
+name = "qview-setup"
+path = "src/main.rs"
+required-features = ["installer"]
+
+[[bin]]
+name = "qview-bundle"
+path = "src/bin/bundle.rs"
+required-features = ["installer"]
+
+[[bin]]
+name = "qview-uninstall"
+path = "src/bin/uninstall.rs"
+required-features = ["uninstaller"]
+
+[build-dependencies]
+zstd = "0.13"
+embed-resource = "2"

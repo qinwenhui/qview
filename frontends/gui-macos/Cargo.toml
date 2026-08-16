@@ -1,0 +1,40 @@
+[package]
+name = "qview-gui-macos"
+version.workspace = true
+edition.workspace = true
+description = "Native AppKit/CoreText log viewer for macOS — direct FFI, no GUI framework"
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+qview-core = { path = "../../crates/core" }
+anyhow = "1"
+memchr = "2.7"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[dependencies.objc2]
+version = "0.6"
+
+[dependencies.objc2-app-kit]
+version = "0.3"
+
+[dependencies.objc2-foundation]
+version = "0.3"
+
+[dependencies.objc2-core-foundation]
+version = "0.3"
+
+[dependencies.objc2-core-graphics]
+version = "0.3"
+
+[dependencies.objc2-core-text]
+version = "0.3"
+
+# 注意：非根 crate 的 [profile.release] 会被 Cargo 忽略，
+# macOS 专属 release 配置已移到工作区根 [profile.release.package.qview-gui-macos]。
+
+[[bin]]
+name = "qview-gui-macos"
+path = "src/main.rs"

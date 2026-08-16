@@ -1,0 +1,49 @@
+# ── Rust / Cargo ──
+/target
+**/*.rs.bk
+
+# ── IDE / 编辑器 ──
+/.idea
+/.cargo
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# ── macOS ──
+.DS_Store
+__MACOSX/
+*.icns.bak
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+
+# ── 构建产物 / 打包 ──
+dist/installer/.payload_stamp
+dist/installer/target/
+*.exe
+*.dll
+*.pdb
+
+# ── 运行期生成的数据 / 日志 ──
+data/
+*.log
+*.log.bak
+*.log.expected.txt
+*.out
+*.err
+llm_raw.log
+
+# ── 测试产物 ──
+bench_data/
+# 本次性能测试的原始 CSV / 日志 / 监控脚本（不被纳入版本管理）
+perf_data/
+
+# ── 内部设计文档（不纳入版本管理）──
+docs/TABS_DESIGN.md
+# AI 器灵的 qview 内部知识库（不发给用户，不进版本管理）
+docs/QVIEW_KB.md
+

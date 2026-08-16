@@ -1,0 +1,35 @@
+[package]
+name = "qview-gui-native"
+version.workspace = true
+edition.workspace = true
+description = "Ultra-lightweight Windows GUI log viewer — direct Win32 / GDI FFI (no GUI framework)"
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+qview-core = { path = "../../crates/core" }
+windows-sys = { version = "0.59", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_Graphics_GdiPlus",
+    "Win32_System_DataExchange",
+    "Win32_System_LibraryLoader",
+    "Win32_System_Memory",
+    "Win32_System_Threading",
+    "Win32_UI_Controls",
+    "Win32_UI_Input_KeyboardAndMouse",
+    "Win32_UI_WindowsAndMessaging",
+    "Win32_UI_Shell",
+] }
+anyhow = "1"
+memchr = "2.7"
+once_cell = "1"
+unicode-width = "0.2"
+rayon = "1"
+regex = "1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+[[bin]]
+name = "qview-gui-native"
+path = "src/main.rs"

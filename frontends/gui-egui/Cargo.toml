@@ -1,0 +1,39 @@
+[package]
+name = "qview-gui-egui"
+version.workspace = true
+edition.workspace = true
+description = "Windows GUI log viewer — egui + glow + qview-core (kept for compat / advanced features)"
+license.workspace = true
+authors.workspace = true
+
+[dependencies]
+qview-core = { path = "../../crates/core" }
+qview-application = { path = "../../crates/application" }
+qview-agent = { path = "../../crates/agent" }
+qview-store = { path = "../../crates/store" }
+contexa-core = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-core" }
+contexa-llm = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-llm" }
+contexa-tools = { git = "https://github.com/qinwenhui/contexa-rs", subdir = "crates/contexa-tools" }
+eframe = { version = "0.31", default-features = false, features = ["glow", "default_fonts"] }
+egui = { version = "0.31", default-features = false, features = ["default_fonts"] }
+anyhow = "1"
+memchr = "2.7"
+png = "0.17"
+rfd = "0.15"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+dirs = "5"
+tokio = { version = "1", features = ["rt-multi-thread", "sync", "macros", "time"] }
+parking_lot = "0.12"
+tracing = "0.1"
+# Window/taskbar icon: decode assets/icon.ico at startup (ico → rgba).
+image = { version = "0.25", default-features = false, features = ["ico"] }
+# 原生 OS 窗口圆角（器灵悬浮窗口）：FindWindowW / SetWindowRgn / CreateRoundRectRgn。
+windows-sys = { version = "0.59", features = [
+    "Win32_Foundation",
+    "Win32_Graphics_Gdi",
+    "Win32_UI_WindowsAndMessaging",
+] }
+
+[build-dependencies]
+embed-resource = "2"
