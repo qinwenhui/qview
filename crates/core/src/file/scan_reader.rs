@@ -331,7 +331,7 @@ impl WindowStream {
         let size = std::fs::metadata(path)
             .with_context(|| format!("metadata {}", path.display()))?
             .len();
-        let mut reader = ScanReader::open(path)?;
+        let reader = ScanReader::open(path)?;
         let (win_tx, win_rx) = bounded(2);
         let (free_tx, free_rx) = bounded(2);
         let cap = window as usize + MAX_LEAD + PAGE;
